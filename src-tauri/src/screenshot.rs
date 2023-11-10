@@ -4,7 +4,8 @@ use log::info;
 pub fn screenshot(x: i32, y: i32) {
     use crate::APP;
     use dirs::cache_dir;
-    use screenshots::{Compression, Screen};
+    use screenshots::Screen;
+    use image::ImageFormat;
     use std::fs;
     info!("Screenshot screen with position: x={}, y={}", x, y);
     let screens = Screen::all().unwrap();
@@ -22,8 +23,7 @@ pub fn screenshot(x: i32, y: i32) {
             app_cache_dir_path.push("pot_screenshot.png");
 
             let image = screen.capture().unwrap();
-            let buffer = image.to_png(Compression::Fast).unwrap();
-            fs::write(app_cache_dir_path, buffer).unwrap();
+            image.save_with_format(app_cache_dir_path, ImageFormat::Png).unwrap();
             break;
         }
     }
